@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATR Grid Target Calculator PRO</title>
+    
+    <!-- Google Fonts: Inter for UI & JetBrains Mono for values/math -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#080c14',
+                        darkCard: '#111726',
+                        darkCardHeader: '#171e30',
+                        darkBorder: '#1e293b',
+                        brandAccent: '#4f46e5', // Indigo-600
+                        brandAccentHover: '#4338ca',
+                        bullish: '#10b981',     // Emerald
+                        bearish: '#f43f5e',     // Rose
+                        warning: '#f59e0b',     // Amber
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Custom scrollbar for premium SaaS feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4f46e5;
+        }
+        
+        /* Custom card glowing styles */
+        .premium-card {
+            background: rgba(17, 23, 38, 0.7);
+            border: 1px solid rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:hover {
+            border-color: rgba(99, 102, 241, 0.25);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Input glowing states */
+        .premium-input {
+            background-color: rgba(9, 12, 20, 0.85);
+            border: 1px solid rgba(30, 41, 59, 0.9);
+            transition: all 0.2s ease-in-out;
+        }
+        .premium-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Pulsing dot animations */
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
+        .pulse-dot {
+            animation: subtle-pulse 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen font-sans flex flex-col justify-between antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+
+    <!-- Premium Sticky Header -->
+    <header class="border-b border-slate-800/50 bg-darkBg/80 backdrop-blur-md sticky top-0 z-50 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-indigo-600 to-violet-500 p-2.5 rounded-xl shadow-lg shadow-indigo-500/15">
+                    <i data-lucide="activity" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold font-mono block leading-none mb-0.5">FINTECH UTILITIES</span>
+                    <h1 class="text-sm sm:text-base font-extrabold text-white tracking-tight flex items-center gap-2 leading-none">
+                        ATR Target Matrix <span class="text-[9px] text-indigo-400 font-bold bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-md">v2.1 PRO</span>
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800/80 text-[10px] text-slate-400 font-mono">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block pulse-dot"></span>
+                    <span>Direct-offset calculations active</span>
+                </div>
+                <!-- Reset Global state button -->
+                <button onclick="resetInputs()" class="text-slate-400 hover:text-white transition-all duration-200 p-2 bg-slate-900/60 rounded-xl hover:bg-slate-900 border border-slate-800 hover:border-slate-700 flex items-center gap-1.5 text-xs font-semibold">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                    <span>Reset</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-6">
+        
+        <!-- Live Summary Info Banner -->
+        <div class="p-4 sm:p-5 bg-gradient-to-r from-indigo-950/20 via-slate-900/40 to-slate-950/40 border border-indigo-900/20 rounded-2xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 shadow-lg shadow-indigo-950/5">
+            <div class="flex items-start gap-3">
+                <div class="bg-indigo-500/10 p-2.5 rounded-xl text-indigo-400 shrink-0 border border-indigo-500/15">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h2 class="text-xs sm:text-sm font-bold text-slate-200 tracking-wide">Multi-Entry Position Grid Planner</h2>
+                    <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed mt-0.5">
+                        Define execution targets and grid entries side by side. Feed in values to update the order-book ladder dynamically.
+                    </p>
+                </div>
+            </div>
+            <!-- Preset tabs selector -->
+            <div class="flex flex-wrap gap-1.5 shrink-0 items-center">
+                <span class="text-[9px] text-slate-500 font-mono font-bold tracking-wider mr-1 uppercase">PRESETS</span>
+                <button onclick="applyPreset('EURUSD', 1.15250, 0.00100, 'long', 'std_forex', 0.02, 0.02, 0.02)" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-850 rounded-xl text-xs font-semibold text-slate-300 border border-slate-800 hover:border-indigo-500/50 hover:text-white transition-all duration-200 shadow-sm">
+                    EUR/USD
+                </button>
+                <button onclick="applyPreset('GBPJPY', 194.167, 0.11, 'short', 'jpy_forex', 0.02, 0.02, 0.02)" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-850 rounded-xl text-xs font-semibold text-slate-300 border border-slate-800 hover:border-indigo-500/50 hover:text-white transition-all duration-200 shadow-sm">
+                    GBP/JPY
+                </button>
+                <button onclick="applyPreset('BTCUSD', 68450.00, 1250.00, 'long', 'standard', 0.1, 0.2, 0.4)" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-850 rounded-xl text-xs font-semibold text-slate-300 border border-slate-800 hover:border-indigo-500/50 hover:text-white transition-all duration-200 shadow-sm">
+                    BTC/USD
+                </button>
+            </div>
+        </div>
+
+        <!-- 2-Column Responsive Workspace Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- LEFT PANEL: Parameters Input (Col Span 5) -->
+            <section class="lg:col-span-5 space-y-6">
+                
+                <!-- Setup Card -->
+                <div class="premium-card rounded-2xl p-6 shadow-xl space-y-5">
+                    
+                    <!-- Section Title -->
+                    <div class="flex items-center gap-2 pb-3 border-b border-slate-800/40">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-500/10 flex items-center justify-center font-bold text-xs text-indigo-400 border border-indigo-500/10">1</span>
+                        <h2 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Setup Configuration</h2>
+                    </div>
+
+                    <!-- Trade Direction -->
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Trade Direction</label>
+                        <div class="grid grid-cols-2 gap-2 bg-slate-950/80 p-1 rounded-xl border border-slate-800/80">
+                            <button type="button" id="dirLong" onclick="setDirection('long')" 
+                                class="py-2.5 rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow-md shadow-emerald-600/10">
+                                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> BUY / LONG
+                            </button>
+                            <button type="button" id="dirShort" onclick="setDirection('short')" 
+                                class="py-2.5 rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-100">
+                                <i data-lucide="trending-down" class="w-3.5 h-3.5"></i> SELL / SHORT
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Asset Precision Mode Buttons -->
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Asset Precision Mode</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" id="type_std" onclick="setAssetType('std_forex')" 
+                                class="p-3 bg-slate-950 border border-indigo-500 rounded-xl flex flex-col items-center justify-center text-center transition group hover:bg-slate-900/60">
+                                <span class="text-xs font-bold text-slate-200">Standard Forex</span>
+                                <span class="text-[9px] text-indigo-400 font-mono mt-1">0.0001 Pip</span>
+                            </button>
+                            <button type="button" id="type_jpy" onclick="setAssetType('jpy_forex')" 
+                                class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition group hover:bg-slate-900/60">
+                                <span class="text-xs font-bold text-slate-200">JPY Forex</span>
+                                <span class="text-[9px] text-slate-500 font-mono mt-1">0.01 Pip</span>
+                            </button>
+                            <button type="button" id="type_standard" onclick="setAssetType('standard')" 
+                                class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition group hover:bg-slate-900/60">
+                                <span class="text-xs font-bold text-slate-200">Indices/Stocks</span>
+                                <span class="text-[9px] text-slate-500 font-mono mt-1">Whole Integers</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Parameters Input Rows -->
+                    <div class="space-y-4">
+                        
+                        <!-- Asset Name & Entry Price Input row -->
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="col-span-1">
+                                <label for="currencyPair" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Asset Symbol</label>
+                                <input type="text" id="currencyPair" value="EURUSD" oninput="calculateTargets()"
+                                    class="w-full premium-input rounded-xl px-3 py-2.5 text-slate-100 text-xs font-bold uppercase font-mono tracking-wider">
+                            </div>
+                            <div class="col-span-2">
+                                <label for="entryPrice" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Base Entry Price</label>
+                                <input type="number" id="entryPrice" step="any" value="1.15250" oninput="calculateTargets()" 
+                                    class="w-full premium-input rounded-xl px-3 py-2.5 text-slate-100 font-mono text-xs font-bold">
+                            </div>
+                        </div>
+
+                        <!-- ATR Inputs with format switcher -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label for="atrValue" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">ATR Offset Value</label>
+                                <div class="flex gap-2">
+                                    <label class="inline-flex items-center text-[9px] text-slate-400 cursor-pointer">
+                                        <input type="radio" name="inputFormat" value="decimal" checked onchange="calculateTargets()" class="mr-1 accent-indigo-500">
+                                        Raw Decimal
+                                    </label>
+                                    <label class="inline-flex items-center text-[9px] text-slate-400 cursor-pointer">
+                                        <input type="radio" name="inputFormat" value="pips" onchange="calculateTargets()" class="mr-1 accent-indigo-500">
+                                        Pips
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="number" id="atrValue" step="any" value="0.00100" oninput="calculateTargets()" 
+                                class="w-full premium-input rounded-xl px-3 py-2.5 text-slate-100 font-mono text-xs font-bold text-indigo-400">
+                            
+                            <!-- ATR Summary Badges (Fixes broken sumRawAtr/sumRoundAtr references) -->
+                            <div class="mt-2 p-2 bg-slate-950/60 border border-slate-800/80 rounded-lg flex items-center justify-between text-[9px] font-mono">
+                                <span class="text-slate-500">Raw ATR: <strong id="sumRawAtr" class="text-slate-300">--</strong></span>
+                                <span class="text-slate-500">Rounded Offset: <strong id="sumRoundAtr" class="text-indigo-400">--</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Stop Loss Input -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label for="stopLoss" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Stop Loss <span class="text-slate-500 font-normal font-mono">(Optional)</span></label>
+                                <button onclick="autoSetStopLoss()" class="text-[9px] text-indigo-400 hover:text-indigo-300 font-semibold transition-all">
+                                    Auto Set SL (From Entry 3)
+                                </button>
+                            </div>
+                            <input type="number" id="stopLoss" step="any" placeholder="Enter custom SL level" oninput="calculateTargets()" 
+                                class="w-full premium-input rounded-xl px-3 py-2.5 text-slate-100 font-mono text-xs focus:border-rose-500/80">
+                        </div>
+                    </div>
+
+                    <!-- Advanced Grid settings (Collapsible) -->
+                    <div class="border-t border-slate-800/50 pt-4">
+                        <button onclick="toggleSection('advancedLotsGrid')" class="w-full flex items-center justify-between text-slate-300 hover:text-white transition-all text-xs font-semibold">
+                            <span class="flex items-center gap-1.5">
+                                <i data-lucide="layers-3" class="w-4 h-4 text-indigo-400"></i>
+                                Advanced Grid Lot Sizing
+                            </span>
+                            <i id="advLotsChevron" data-lucide="chevron-down" class="w-4 h-4 transform transition-transform duration-250"></i>
+                        </button>
+                        
+                        <div id="advancedLotsGrid" class="hidden mt-3 space-y-3 bg-slate-950/65 p-3.5 rounded-xl border border-slate-800/80">
+                            <span class="block text-[10px] text-slate-400 leading-relaxed font-medium">
+                                Configure lot sizes dynamically across the scaling levels. Useful for Martingale or risk adjustment.
+                            </span>
+                            <div class="grid grid-cols-3 gap-2.5">
+                                <div>
+                                    <span class="block text-[9px] text-slate-500 font-mono font-bold mb-1">1st Entry (Lots)</span>
+                                    <input type="number" id="lot1" step="0.01" value="0.02" oninput="calculateTargets()"
+                                        class="w-full premium-input rounded-lg px-2 py-1.5 text-center text-xs font-mono font-bold text-white">
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] text-slate-500 font-mono font-bold mb-1">2nd Entry (Lots)</span>
+                                    <input type="number" id="lot2" step="0.01" value="0.02" oninput="calculateTargets()"
+                                        class="w-full premium-input rounded-lg px-2 py-1.5 text-center text-xs font-mono font-bold text-white">
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] text-slate-500 font-mono font-bold mb-1">3rd Entry (Lots)</span>
+                                    <input type="number" id="lot3" step="0.01" value="0.02" oninput="calculateTargets()"
+                                        class="w-full premium-input rounded-lg px-2 py-1.5 text-center text-xs font-mono font-bold text-white">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Step calculations terminal logs -->
+                <div class="premium-card rounded-2xl p-5 text-xs text-slate-400 space-y-3 bg-slate-950/40">
+                    <div class="flex items-center justify-between border-b border-slate-850 pb-2">
+                        <span class="font-bold text-slate-300 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+                            <i data-lucide="terminal" class="w-3.5 h-3.5 text-indigo-400"></i>
+                            Formula Steps Log
+                        </span>
+                        <div class="flex space-x-1">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500/60 inline-block"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500/60 inline-block"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/60 inline-block"></span>
+                        </div>
+                    </div>
+                    <div id="formulaSteps" class="font-mono text-[11px] text-slate-350 space-y-1.5 leading-relaxed">
+                        <!-- Dynamically generated logs -->
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- RIGHT PANEL: Display Targets & Interactive Matrix (Col Span 7) -->
+            <section class="lg:col-span-7 space-y-6">
+                
+                <!-- Target Outputs Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- TP1 Targets Container -->
+                    <div class="premium-card rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between hover:border-emerald-500/20 bg-gradient-to-b from-darkCard to-slate-900/60">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl"></div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[9px] font-bold border border-emerald-500/20 uppercase tracking-widest font-mono">Target 1 (TP1)</span>
+                            <span class="text-[9px] text-slate-500 font-mono font-semibold">1x ATR Offset</span>
+                        </div>
+                        <div>
+                            <p id="tp1Output" class="text-3xl font-extrabold text-white font-mono leading-none tracking-tight">--</p>
+                            <p id="tp1Diff" class="text-xs text-emerald-400 font-mono mt-1 font-semibold flex items-center gap-1">--</p>
+                        </div>
+                        
+                        <!-- Dynamic Risk/Reward Ratio -->
+                        <div id="tp1RRContainer" class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400 hidden">
+                            <span class="flex items-center gap-1"><i data-lucide="scale" class="w-3.5 h-3.5 text-slate-500"></i> Avg-Entry R:R Ratio:</span>
+                            <span id="tp1RR" class="font-mono font-bold text-emerald-400">1 : --</span>
+                        </div>
+                    </div>
+
+                    <!-- TP2 Targets Container -->
+                    <div class="premium-card rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between hover:border-indigo-500/20 bg-gradient-to-b from-darkCard to-slate-900/60">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl"></div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-400 text-[9px] font-bold border border-indigo-500/20 uppercase tracking-widest font-mono">Target 2 (TP2)</span>
+                            <span class="text-[9px] text-slate-500 font-mono font-semibold">2x ATR Offset</span>
+                        </div>
+                        <div>
+                            <p id="tp2Output" class="text-3xl font-extrabold text-white font-mono leading-none tracking-tight">--</p>
+                            <p id="tp2Diff" class="text-xs text-indigo-400 font-mono mt-1 font-semibold flex items-center gap-1">--</p>
+                        </div>
+                        
+                        <!-- Dynamic Risk/Reward Ratio -->
+                        <div id="tp2RRContainer" class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400 hidden">
+                            <span class="flex items-center gap-1"><i data-lucide="scale" class="w-3.5 h-3.5 text-slate-500"></i> Avg-Entry R:R Ratio:</span>
+                            <span id="tp2RR" class="font-mono font-bold text-indigo-400">1 : --</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Scale-In Entry Grid -->
+                <div class="premium-card rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl"></div>
+                    
+                    <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-850">
+                        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="grid" class="w-4 h-4 text-indigo-400"></i>
+                            Scale-In Entry Level Price Grid
+                        </h3>
+                        <span class="text-[9px] text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded font-bold font-mono">
+                            Opposing ATR Steps
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <!-- Entry 1 -->
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-800">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] text-slate-450 font-bold uppercase tracking-wider">1st Order (Base)</span>
+                                <span id="gridE1LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
+                            </div>
+                            <p id="gridE1Price" class="text-lg font-extrabold font-mono text-slate-100">--</p>
+                            <p class="text-[9px] text-slate-500 font-mono mt-1 font-semibold uppercase">Offset: 0 ATR</p>
+                        </div>
+                        <!-- Entry 2 -->
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-800">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">2nd Order (Scale)</span>
+                                <span id="gridE2LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
+                            </div>
+                            <p id="gridE2Price" class="text-lg font-extrabold font-mono text-slate-100">--</p>
+                            <p class="text-[9px] text-indigo-400 font-mono mt-1 font-semibold uppercase">&plusmn; 2x ATR Opposing</p>
+                        </div>
+                        <!-- Entry 3 -->
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-800">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">3rd Order (Scale)</span>
+                                <span id="gridE3LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
+                            </div>
+                            <p id="gridE3Price" class="text-lg font-extrabold font-mono text-slate-100">--</p>
+                            <p class="text-[9px] text-indigo-400 font-mono mt-1 font-semibold uppercase">&plusmn; 4x ATR Opposing</p>
+                        </div>
+                    </div>
+
+                    <!-- Weighted Average Ribbon -->
+                    <div class="p-3 bg-indigo-950/20 border border-indigo-500/20 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="combine" class="w-4 h-4 text-indigo-400"></i>
+                            <span class="text-slate-400">Weighted Average Price (All orders filled):</span>
+                            <strong id="gridAvgPrice" class="text-indigo-300 text-sm font-extrabold">--</strong>
+                        </div>
+                        <div class="text-slate-400 text-xs">
+                            Total volume: <span id="gridTotalLots" class="font-extrabold text-slate-200">--</span> Lots
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Interactive Vertical Price Ladder Map -->
+                <div class="premium-card rounded-2xl p-6 shadow-xl space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-850">
+                        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="sliders" class="w-4 h-4 text-indigo-400"></i>
+                            Interactive Trade Visualizer Map
+                        </h3>
+                        <span class="text-[9px] text-slate-500 font-mono font-bold uppercase">Pricing Timeline</span>
+                    </div>
+
+                    <div class="bg-slate-950/90 rounded-xl p-5 border border-slate-900 relative flex flex-col justify-center min-h-[420px]">
+                        <!-- Vertical connecting line down visual -->
+                        <div class="absolute left-6 top-10 bottom-10 w-[2px] bg-indigo-950/80 border-dashed border-slate-800 pointer-events-none"></div>
+
+                        <!-- Content wrapper -->
+                        <div class="relative w-full flex flex-col gap-3 font-mono text-xs z-10 pl-10">
+                            
+                            <!-- TP2 Level Container -->
+                            <div id="visTP2Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-indigo-500 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-indigo-500 pulse-dot"></span>
+                                    <span class="font-bold text-indigo-300">Take Profit 2 (TP2)</span>
+                                </div>
+                                <span id="visTP2Val" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                            </div>
+
+                            <!-- TP1 Level Container -->
+                            <div id="visTP1Line" class="flex items-center justify-between p-3 rounded-xl bg-emerald-950/10 border-l-4 border-emerald-500 border-y border-r border-slate-850 transition-all hover:bg-emerald-950/20">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                    <span class="font-bold text-emerald-300">Take Profit 1 (TP1)</span>
+                                </div>
+                                <span id="visTP1Val" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                            </div>
+
+                            <!-- Entry 1 Level Container -->
+                            <div id="visEntryLine" class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border-l-4 border-slate-400 border-y border-r border-slate-850 transition-all hover:bg-slate-900">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                    <span class="font-bold text-slate-300">1st Entry Order (Base)</span>
+                                </div>
+                                <span id="visEntryVal" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                            </div>
+
+                            <!-- Entry 2 Scale-In Level Container -->
+                            <div id="visEntry2Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
+                                    <span class="font-bold text-indigo-300">2nd Entry (&plusmn;2x ATR)</span>
+                                </div>
+                                <span id="visEntry2Val" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                            </div>
+
+                            <!-- Entry 3 Scale-In Level Container -->
+                            <div id="visEntry3Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
+                                    <span class="font-bold text-indigo-300">3rd Entry (&plusmn;4x ATR)</span>
+                                </div>
+                                <span id="visEntry3Val" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                            </div>
+
+                            <!-- Stop Loss Level Container -->
+                            <div id="visSLLine" class="flex items-center justify-between p-3 rounded-xl bg-rose-950/10 border-l-4 border-rose-500 border-y border-r border-slate-850 opacity-40 transition-all duration-350 hover:opacity-100 hover:bg-rose-950/20">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                    <span class="font-bold text-rose-300">Stop Loss (SL)</span>
+                                </div>
+                                <span id="visSLVal" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Logs Table -->
+                <div class="premium-card rounded-2xl p-6 shadow-xl space-y-4">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-850">
+                        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="history" class="w-4 h-4 text-warning"></i>
+                            Setup History Logs
+                        </h3>
+                        <button onclick="clearHistory()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold transition-all">
+                            Wipe History Log
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-900 bg-slate-950/80">
+                        <table class="w-full text-left text-xs border-collapse font-mono">
+                            <thead>
+                                <tr class="bg-slate-900/50 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-850 font-sans text-[9px]">
+                                    <th class="p-3">Asset</th>
+                                    <th class="p-3">Type</th>
+                                    <th class="p-3">Entry / Avg</th>
+                                    <th class="p-3">ATR</th>
+                                    <th class="p-3">TP1</th>
+                                    <th class="p-3">TP2</th>
+                                    <th class="p-3 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody" class="divide-y divide-slate-900 text-slate-300">
+                                <tr id="noHistoryRow">
+                                    <td colspan="7" class="p-8 text-center text-slate-500 font-sans italic">
+                                        No setups logged in this session yet.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Execution Buttons -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="copyToClipboard()" class="py-3.5 px-4 rounded-xl font-bold text-xs bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-white shadow-xl flex items-center justify-center gap-2 transition duration-200 uppercase tracking-wider font-sans">
+                        <i data-lucide="copy" class="w-4 h-4 text-indigo-400"></i> Copy complete grid text
+                    </button>
+                    <button onclick="logToHistory()" class="py-3.5 px-4 rounded-xl font-bold text-xs bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition duration-200 uppercase tracking-wider font-sans">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Save this Grid setup
+                    </button>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Sleek Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 px-4 py-3 bg-slate-900 border border-emerald-500/30 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-24 opacity-0 pointer-events-none z-50">
+        <div class="bg-emerald-500/10 p-2 rounded-lg text-emerald-400">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+        </div>
+        <div>
+            <p id="toastTitle" class="text-xs font-bold text-white">Action Complete</p>
+            <p id="toastMessage" class="text-[10px] text-slate-400">State computed.</p>
+        </div>
+    </div>
+
+    <!-- Footnotes info -->
+    <footer class="border-t border-slate-900 bg-darkCard/25 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="font-medium">&copy; 2026 ATR Target Matrix Dashboard. Verified Precision Target Architect.</p>
+            <p class="flex items-center gap-1.5 text-slate-400 font-medium">
+                <span>Aligned with grid scale-in systems</span>
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Core Computation Engine Logic -->
+    <script>
+        let currentAssetType = 'std_forex';
+        let tradeDirection = 'long';
+        let historySetups = [];
+
+        // Initial launch triggers
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            calculateTargets();
+        });
+
+        // Set buy / sell direction state tabs
+        function setDirection(dir) {
+            tradeDirection = dir;
+            const longBtn = document.getElementById('dirLong');
+            const shortBtn = document.getElementById('dirShort');
+
+            if (dir === 'long') {
+                longBtn.className = "py-2.5 rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1.5 bg-emerald-600 text-white shadow-md shadow-emerald-600/10";
+                shortBtn.className = "py-2.5 rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-100";
+            } else {
+                shortBtn.className = "py-2.5 rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1.5 bg-rose-600 text-white shadow-md shadow-rose-600/10";
+                longBtn.className = "py-2.5 rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-100";
+            }
+            calculateTargets();
+        }
+
+        // Segmented asset precision switches
+        function setAssetType(type) {
+            currentAssetType = type;
+
+            const btnStd = document.getElementById('type_std');
+            const btnJpy = document.getElementById('type_jpy');
+            const btnStandard = document.getElementById('type_standard');
+
+            // Reset borders and active classes
+            btnStd.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
+            btnJpy.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
+            btnStandard.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
+
+            if (type === 'std_forex') {
+                btnStd.className = "p-3 bg-slate-950 border-2 border-indigo-500/80 bg-indigo-500/10 rounded-xl flex flex-col items-center justify-center text-center transition text-slate-200 shadow-[0_0_15px_rgba(99,102,241,0.15)]";
+            } else if (type === 'jpy_forex') {
+                btnJpy.className = "p-3 bg-slate-950 border-2 border-indigo-500/80 bg-indigo-500/10 rounded-xl flex flex-col items-center justify-center text-center transition text-slate-200 shadow-[0_0_15px_rgba(99,102,241,0.15)]";
+            } else {
+                btnStandard.className = "p-3 bg-slate-950 border-2 border-indigo-500/80 bg-indigo-500/10 rounded-xl flex flex-col items-center justify-center text-center transition text-slate-200 shadow-[0_0_15px_rgba(99,102,241,0.15)]";
+            }
+
+            calculateTargets();
+        }
+
+        // Toggle collapsible layouts smoothly
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            const chevron = document.getElementById('advLotsChevron');
+            if (section.classList.contains('hidden')) {
+                section.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
+            } else {
+                section.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
+        // Apply a quick preset of values
+        function applyPreset(pair, entry, atr, direction, type, l1=0.02, l2=0.02, l3=0.02) {
+            document.getElementById('currencyPair').value = pair;
+            document.getElementById('entryPrice').value = entry;
+            document.getElementById('atrValue').value = atr;
+            document.getElementById('stopLoss').value = "";
+            
+            document.getElementById('lot1').value = l1;
+            document.getElementById('lot2').value = l2;
+            document.getElementById('lot3').value = l3;
+            
+            const radioDecimal = document.querySelector('input[name="inputFormat"][value="decimal"]');
+            const radioPips = document.querySelector('input[name="inputFormat"][value="pips"]');
+            if (type === 'standard') {
+                radioPips.checked = true;
+            } else {
+                radioDecimal.checked = true;
+            }
+
+            setAssetType(type);
+            setDirection(direction);
+            showToast("Preset Loaded", `Active grid targets set for ${pair}.`);
+        }
+
+        // Auto calculates reasonable SL from Entry 3 position
+        function autoSetStopLoss() {
+            const entry = parseFloat(document.getElementById('entryPrice').value) || 0;
+            const rawAtr = parseFloat(document.getElementById('atrValue').value) || 0;
+            const format = document.querySelector('input[name="inputFormat"]:checked').value;
+
+            if (entry <= 0 || rawAtr <= 0) {
+                showToast("Invalid Input", "Please configure an Entry and ATR first.");
+                return;
+            }
+
+            let atrUnitVal = 0;
+            if (format === 'pips') {
+                const pipValue = currentAssetType === 'jpy_forex' ? 0.01 : (currentAssetType === 'std_forex' ? 0.0001 : 1);
+                atrUnitVal = Math.ceil(rawAtr) * pipValue;
+            } else {
+                if (currentAssetType === 'jpy_forex') {
+                    atrUnitVal = Math.ceil(rawAtr * 100) / 100;
+                } else if (currentAssetType === 'std_forex') {
+                    atrUnitVal = Math.ceil(rawAtr * 10000) / 10000;
+                } else {
+                    atrUnitVal = Math.ceil(rawAtr);
+                }
+            }
+
+            // Calculations are 4x ATR past entry for Entry 3. Stop loss is another 1x ATR out (Total 5x ATR)
+            const calculatedSL = tradeDirection === 'long' ? (entry - (5 * atrUnitVal)) : (entry + (5 * atrUnitVal));
+            
+            const entryStr = document.getElementById('entryPrice').value;
+            const dotIdx = entryStr.indexOf('.');
+            const decimalPlaces = dotIdx === -1 ? 2 : (entryStr.length - dotIdx - 1);
+
+            document.getElementById('stopLoss').value = calculatedSL.toFixed(decimalPlaces);
+            calculateTargets();
+            showToast("Stop Loss Auto-Set", "Stop loss calculated 1x ATR beyond Entry Order 3.");
+        }
+
+        function resetInputs() {
+            document.getElementById('currencyPair').value = "EURUSD";
+            document.getElementById('entryPrice').value = "1.15250";
+            document.getElementById('atrValue').value = "0.00100";
+            document.getElementById('stopLoss').value = "";
+            document.getElementById('lot1').value = "0.02";
+            document.getElementById('lot2').value = "0.02";
+            document.getElementById('lot3').value = "0.02";
+            document.querySelector('input[name="inputFormat"][value="decimal"]').checked = true;
+            setAssetType('std_forex');
+            setDirection('long');
+            showToast("Parameters Reset", "Default settings successfully restored.");
+        }
+
+        // CALCULATE CORE ENGINE
+        function calculateTargets() {
+            const pair = document.getElementById('currencyPair').value.toUpperCase();
+            const entry = parseFloat(document.getElementById('entryPrice').value);
+            const rawAtr = parseFloat(document.getElementById('atrValue').value);
+            const stopLossInput = parseFloat(document.getElementById('stopLoss').value);
+            const format = document.querySelector('input[name="inputFormat"]:checked').value;
+
+            // Fetch lots
+            const lot1 = parseFloat(document.getElementById('lot1').value) || 0;
+            const lot2 = parseFloat(document.getElementById('lot2').value) || 0;
+            const lot3 = parseFloat(document.getElementById('lot3').value) || 0;
+
+            if (isNaN(entry) || isNaN(rawAtr) || entry <= 0 || rawAtr <= 0) {
+                clearOutputs();
+                return;
+            }
+
+            // Extract precision from entry price directly to display outputs consistently
+            const entryStr = document.getElementById('entryPrice').value;
+            const dotIdx = entryStr.indexOf('.');
+            const decimalPoints = dotIdx === -1 ? 2 : (entryStr.length - dotIdx - 1);
+
+            let roundedAtrOffset = 0;
+
+            if (format === 'pips') {
+                const roundedPips = Math.ceil(rawAtr);
+                const pipUnitMultiplier = currentAssetType === 'jpy_forex' ? 0.01 : (currentAssetType === 'std_forex' ? 0.0001 : 1);
+                roundedAtrOffset = roundedPips * pipUnitMultiplier;
+            } else {
+                if (currentAssetType === 'jpy_forex') {
+                    roundedAtrOffset = Math.ceil(rawAtr * 100) / 100;
+                } else if (currentAssetType === 'std_forex') {
+                    roundedAtrOffset = Math.ceil(rawAtr * 10000) / 10000;
+                } else {
+                    roundedAtrOffset = Math.ceil(rawAtr);
+                }
+            }
+
+            // Set visual lot weight labels inside grid panel
+            document.getElementById('gridE1LotsLabel').textContent = `${lot1.toFixed(2)} Lots`;
+            document.getElementById('gridE2LotsLabel').textContent = `${lot2.toFixed(2)} Lots`;
+            document.getElementById('gridE3LotsLabel').textContent = `${lot3.toFixed(2)} Lots`;
+
+            // Calculate Take Profit positions
+            let tp1, tp2;
+            const opSymbol = tradeDirection === 'long' ? '+' : '-';
+            const oppOpSymbol = tradeDirection === 'long' ? '-' : '+';
+
+            if (tradeDirection === 'long') {
+                tp1 = entry + roundedAtrOffset;
+                tp2 = entry + (roundedAtrOffset * 2);
+            } else {
+                tp1 = entry - roundedAtrOffset;
+                tp2 = entry - (roundedAtrOffset * 2);
+            }
+
+            // Calculate Scale-In levels
+            let entry2, entry3;
+            if (tradeDirection === 'long') {
+                entry2 = entry - (2 * roundedAtrOffset);
+                entry3 = entry - (4 * roundedAtrOffset);
+            } else {
+                entry2 = entry + (2 * roundedAtrOffset);
+                entry3 = entry + (4 * roundedAtrOffset);
+            }
+
+            // Update Target board UI
+            document.getElementById('tp1Output').textContent = tp1.toFixed(decimalPoints);
+            document.getElementById('tp2Output').textContent = tp2.toFixed(decimalPoints);
+
+            const dirSymbol = tradeDirection === 'long' ? '+' : '-';
+            document.getElementById('tp1Diff').textContent = `${dirSymbol}${roundedAtrOffset.toFixed(decimalPoints)}`;
+            document.getElementById('tp2Diff').textContent = `${dirSymbol}${(roundedAtrOffset * 2).toFixed(decimalPoints)}`;
+
+            // Update Entry Grid levels
+            document.getElementById('gridE1Price').textContent = entry.toFixed(decimalPoints);
+            document.getElementById('gridE2Price').textContent = entry2.toFixed(decimalPoints);
+            document.getElementById('gridE3Price').textContent = entry3.toFixed(decimalPoints);
+
+            // Compute Average Entry Price logic
+            const totalLots = lot1 + lot2 + lot3;
+            let weightedAverage = 0;
+            if (totalLots > 0) {
+                weightedAverage = ((entry * lot1) + (entry2 * lot2) + (entry3 * lot3)) / totalLots;
+            } else {
+                weightedAverage = entry;
+            }
+
+            document.getElementById('gridAvgPrice').textContent = weightedAverage.toFixed(decimalPoints);
+            document.getElementById('gridTotalLots').textContent = totalLots.toFixed(2);
+
+            // Summaries meta update
+            document.getElementById('sumRawAtr').textContent = rawAtr;
+            document.getElementById('sumRoundAtr').textContent = roundedAtrOffset.toFixed(decimalPoints);
+
+            // Update step explanation board
+            const formulaBox = document.getElementById('formulaSteps');
+            formulaBox.innerHTML = `
+                <div>1st Order Entry: <span class="text-indigo-400 font-bold">${entry}</span></div>
+                <div>Ceiled ATR Step Value: <span class="text-amber-400 font-bold">${roundedAtrOffset.toFixed(decimalPoints)}</span></div>
+                <div class="pt-1.5 border-t border-slate-800/60 mt-1">
+                    TP1: ${entry} ${opSymbol} ${roundedAtrOffset.toFixed(decimalPoints)} = <span class="text-emerald-400 font-bold">${tp1.toFixed(decimalPoints)}</span>
+                </div>
+                <div>
+                    TP2: ${entry} ${opSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 2) = <span class="text-indigo-400 font-bold">${tp2.toFixed(decimalPoints)}</span>
+                </div>
+                <div class="pt-1.5 border-t border-slate-800/60 mt-1">
+                    Order 2 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 2) = <span class="text-indigo-305 font-semibold text-slate-305">${entry2.toFixed(decimalPoints)}</span>
+                </div>
+                <div>
+                    Order 3 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 4) = <span class="text-indigo-305 font-semibold text-slate-305">${entry3.toFixed(decimalPoints)}</span>
+                </div>
+            `;
+
+            // Calculate Risk/Reward ratio elements if optional Stop Loss provided
+            const tp1RRContainer = document.getElementById('tp1RRContainer');
+            const tp2RRContainer = document.getElementById('tp2RRContainer');
+            const visSLLine = document.getElementById('visSLLine');
+            const visSLVal = document.getElementById('visSLVal');
+
+            if (!isNaN(stopLossInput) && stopLossInput > 0) {
+                const totalRisk = Math.abs(weightedAverage - stopLossInput);
+                if (totalRisk > 0) {
+                    const tp1Reward = Math.abs(tp1 - weightedAverage);
+                    const tp2Reward = Math.abs(tp2 - weightedAverage);
+
+                    document.getElementById('tp1RR').textContent = `1 : ${(tp1Reward / totalRisk).toFixed(2)}`;
+                    document.getElementById('tp2RR').textContent = `1 : ${(tp2Reward / totalRisk).toFixed(2)}`;
+
+                    tp1RRContainer.classList.remove('hidden');
+                    tp2RRContainer.classList.remove('hidden');
+
+                    visSLLine.classList.remove('opacity-40');
+                    visSLVal.textContent = stopLossInput.toFixed(decimalPoints);
+                }
+            } else {
+                tp1RRContainer.classList.add('hidden');
+                tp2RRContainer.classList.add('hidden');
+                visSLLine.classList.add('opacity-40');
+                visSLVal.textContent = "Not Set";
+            }
+
+            // Dynamic map rendering refresh
+            updateVisualizer(entry, entry2, entry3, tp1, tp2, stopLossInput, decimalPoints);
+        }
+
+        function clearOutputs() {
+            document.getElementById('tp1Output').textContent = "--";
+            document.getElementById('tp2Output').textContent = "--";
+            document.getElementById('gridE1Price').textContent = "--";
+            document.getElementById('gridE2Price').textContent = "--";
+            document.getElementById('gridE3Price').textContent = "--";
+            document.getElementById('gridAvgPrice').textContent = "--";
+            document.getElementById('gridTotalLots').textContent = "--";
+            document.getElementById('sumRawAtr').textContent = "--";
+            document.getElementById('sumRoundAtr').textContent = "--";
+            document.getElementById('formulaSteps').innerHTML = `<div class="text-slate-500 italic text-[11px]">Awaiting inputs...</div>`;
+        }
+
+        function updateVisualizer(entry1, entry2, entry3, tp1, tp2, stopLoss, decimals) {
+            const linesContainer = document.querySelector('.relative.w-full.flex.flex-col');
+            const visTP2 = document.getElementById('visTP2Line');
+            const visTP1 = document.getElementById('visTP1Line');
+            const visEntry1 = document.getElementById('visEntryLine');
+            const visEntry2 = document.getElementById('visEntry2Line');
+            const visEntry3 = document.getElementById('visEntry3Line');
+            const visSL = document.getElementById('visSLLine');
+
+            document.getElementById('visTP2Val').textContent = tp2.toFixed(decimals);
+            document.getElementById('visTP1Val').textContent = tp1.toFixed(decimals);
+            document.getElementById('visEntryVal').textContent = entry1.toFixed(decimals);
+            document.getElementById('visEntry2Val').textContent = entry2.toFixed(decimals);
+            document.getElementById('visEntry3Val').textContent = entry3.toFixed(decimals);
+
+            // Re-order visual map boxes depending on Long or Short direction
+            visTP2.remove();
+            visTP1.remove();
+            visEntry1.remove();
+            visEntry2.remove();
+            visEntry3.remove();
+            visSL.remove();
+
+            if (tradeDirection === 'long') {
+                linesContainer.appendChild(visTP2);
+                linesContainer.appendChild(visTP1);
+                linesContainer.appendChild(visEntry1);
+                linesContainer.appendChild(visEntry2);
+                linesContainer.appendChild(visEntry3);
+                linesContainer.appendChild(visSL);
+            } else {
+                linesContainer.appendChild(visSL);
+                linesContainer.appendChild(visEntry3);
+                linesContainer.appendChild(visEntry2);
+                linesContainer.appendChild(visEntry1);
+                linesContainer.appendChild(visTP1);
+                linesContainer.appendChild(visTP2);
+            }
+        }
+
+        function copyToClipboard() {
+            const pair = document.getElementById('currencyPair').value.toUpperCase();
+            const entry1 = document.getElementById('gridE1Price').textContent;
+            const entry2 = document.getElementById('gridE2Price').textContent;
+            const entry3 = document.getElementById('gridE3Price').textContent;
+            const avgEntry = document.getElementById('gridAvgPrice').textContent;
+            const totalLots = document.getElementById('gridTotalLots').textContent;
+            const tp1 = document.getElementById('tp1Output').textContent;
+            const tp2 = document.getElementById('tp2Output').textContent;
+            const sl = document.getElementById('stopLoss').value || "Not Set";
+            const dir = tradeDirection.toUpperCase();
+
+            if (tp1 === "--" || tp2 === "--") {
+                showToast("Nothing to Copy", "Please run a calculation check first.");
+                return;
+            }
+
+            const text = `[ATR Grid Matrix Setup: ${pair} (${dir})]
+---------------------------------------------------
+1st Order Price (Base): ${entry1} [Lots: ${document.getElementById('lot1').value}]
+2nd Order Price (Scale): ${entry2} [Lots: ${document.getElementById('lot2').value}]
+3rd Order Price (Scale): ${entry3} [Lots: ${document.getElementById('lot3').value}]
+---------------------------------------------------
+Weighted average price if filled: ${avgEntry} (${totalLots} Lots total)
+---------------------------------------------------
+TP1 Target Level: ${tp1}
+TP2 Target Level: ${tp2}
+Stop Loss level: ${sl}
+---------------------------------------------------`;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast("Grid Copied", "Plan successfully copied to clipboard.");
+            } catch (err) {
+                showToast("Copy Failed", "Please select and copy manually.");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function logToHistory() {
+            const pair = document.getElementById('currencyPair').value.toUpperCase();
+            const entry1 = document.getElementById('gridE1Price').textContent;
+            const avgEntry = document.getElementById('gridAvgPrice').textContent;
+            const tp1Val = document.getElementById('tp1Output').textContent;
+            const tp2Val = document.getElementById('tp2Output').textContent;
+            const sumAtr = document.getElementById('sumRoundAtr').textContent;
+
+            if (tp1Val === "--") return;
+
+            const setup = {
+                id: Date.now(),
+                pair,
+                direction: tradeDirection,
+                entryText: `${entry1} / ${avgEntry}`,
+                atr: sumAtr,
+                tp1: tp1Val,
+                tp2: tp2Val
+            };
+
+            historySetups.unshift(setup);
+            renderHistory();
+            showToast("Grid Setup Logged", "Grid setup stored in session logs.");
+        }
+
+        function renderHistory() {
+            const body = document.getElementById('historyBody');
+            if (historySetups.length === 0) {
+                body.innerHTML = `
+                    <tr id="noHistoryRow">
+                        <td colspan="7" class="p-8 text-center text-slate-505 text-slate-500 font-sans italic">
+                            No setups logged in this session yet.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            body.innerHTML = "";
+            historySetups.forEach(setup => {
+                const dirColor = setup.direction === 'long' ? 'text-emerald-450 text-emerald-400 font-bold' : 'text-rose-450 text-rose-400 font-bold';
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-900/60 border-b border-slate-900 text-xs transition duration-150";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-slate-100 uppercase tracking-wide">${setup.pair}</td>
+                    <td class="p-3 uppercase font-bold tracking-wider ${dirColor}">${setup.direction}</td>
+                    <td class="p-3 font-semibold text-slate-350">${setup.entryText}</td>
+                    <td class="p-3 text-indigo-400">${setup.atr}</td>
+                    <td class="p-3 font-bold text-emerald-400 bg-emerald-500/5">${setup.tp1}</td>
+                    <td class="p-3 font-bold text-indigo-400 bg-indigo-505/5 bg-indigo-500/5">${setup.tp2}</td>
+                    <td class="p-3 text-right font-sans">
+                        <button onclick="deleteHistoryItem(${setup.id})" class="text-slate-500 hover:text-rose-400 text-xs font-semibold transition px-2 py-1">
+                            Delete
+                        </button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        function deleteHistoryItem(id) {
+            historySetups = historySetups.filter(item => item.id !== id);
+            renderHistory();
+        }
+
+        // Wipe setups database
+        function clearHistory() {
+            historySetups = [];
+            renderHistory();
+            showToast("Logs Cleared", "Wiped all grid session logs.");
+        }
+
+        function showToast(title, message) {
+            const toast = document.getElementById('toastNotification');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMsg = document.getElementById('toastMessage');
+
+            toastTitle.textContent = title;
+            toastMsg.textContent = message;
+
+            toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
