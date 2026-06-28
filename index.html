@@ -322,7 +322,7 @@
                 <!-- Target Outputs Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     
-                    <!-- TP1 Targets Container -->
+                        <!-- TP1 Targets Container -->
                     <div class="premium-card rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between hover:border-emerald-500/20 bg-gradient-to-b from-darkCard to-slate-900/60">
                         <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl"></div>
                         <div class="flex items-center justify-between mb-4">
@@ -330,7 +330,10 @@
                             <span class="text-[9px] text-slate-500 font-mono font-semibold">1x ATR Offset</span>
                         </div>
                         <div>
-                            <p id="tp1Output" class="text-3xl font-extrabold text-white font-mono leading-none tracking-tight">--</p>
+                            <div class="flex items-center gap-2 group cursor-pointer" onclick="copySingleValue('tp1Output', 'TP1 Target')" title="Click to copy TP1 Target">
+                                <p id="tp1Output" class="text-3xl font-extrabold text-white font-mono leading-none tracking-tight group-hover:text-emerald-300 transition-colors">--</p>
+                                <i data-lucide="copy" class="w-4 h-4 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
                             <p id="tp1Diff" class="text-xs text-emerald-400 font-mono mt-1 font-semibold flex items-center gap-1">--</p>
                         </div>
                         
@@ -349,7 +352,10 @@
                             <span class="text-[9px] text-slate-500 font-mono font-semibold">2x ATR Offset</span>
                         </div>
                         <div>
-                            <p id="tp2Output" class="text-3xl font-extrabold text-white font-mono leading-none tracking-tight">--</p>
+                            <div class="flex items-center gap-2 group cursor-pointer" onclick="copySingleValue('tp2Output', 'TP2 Target')" title="Click to copy TP2 Target">
+                                <p id="tp2Output" class="text-3xl font-extrabold text-white font-mono leading-none tracking-tight group-hover:text-indigo-300 transition-colors">--</p>
+                                <i data-lucide="copy" class="w-4 h-4 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
                             <p id="tp2Diff" class="text-xs text-indigo-400 font-mono mt-1 font-semibold flex items-center gap-1">--</p>
                         </div>
                         
@@ -378,30 +384,39 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <!-- Entry 1 -->
-                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-800">
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-850 hover:border-indigo-500/25">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-[10px] text-slate-450 font-bold uppercase tracking-wider">1st Order (Base)</span>
                                 <span id="gridE1LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
                             </div>
-                            <p id="gridE1Price" class="text-lg font-extrabold font-mono text-slate-100">--</p>
+                            <div class="flex items-center gap-1.5 group cursor-pointer animate-transition" onclick="copySingleValue('gridE1Price', '1st Order Entry Price')" title="Click to copy 1st Entry">
+                                <p id="gridE1Price" class="text-lg font-extrabold font-mono text-slate-100 group-hover:text-indigo-400 transition-colors">--</p>
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
                             <p class="text-[9px] text-slate-500 font-mono mt-1 font-semibold uppercase">Offset: 0 ATR</p>
                         </div>
                         <!-- Entry 2 -->
-                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-800">
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-850 hover:border-indigo-500/25">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">2nd Order (Scale)</span>
                                 <span id="gridE2LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
                             </div>
-                            <p id="gridE2Price" class="text-lg font-extrabold font-mono text-slate-100">--</p>
+                            <div class="flex items-center gap-1.5 group cursor-pointer animate-transition" onclick="copySingleValue('gridE2Price', '2nd Order Entry Price')" title="Click to copy 2nd Entry">
+                                <p id="gridE2Price" class="text-lg font-extrabold font-mono text-slate-100 group-hover:text-indigo-400 transition-colors">--</p>
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
                             <p class="text-[9px] text-indigo-400 font-mono mt-1 font-semibold uppercase">&plusmn; 2x ATR Opposing</p>
                         </div>
                         <!-- Entry 3 -->
-                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-800">
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-850 hover:border-indigo-500/25">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">3rd Order (Scale)</span>
                                 <span id="gridE3LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
                             </div>
-                            <p id="gridE3Price" class="text-lg font-extrabold font-mono text-slate-100">--</p>
+                            <div class="flex items-center gap-1.5 group cursor-pointer animate-transition" onclick="copySingleValue('gridE3Price', '3rd Order Entry Price')" title="Click to copy 3rd Entry">
+                                <p id="gridE3Price" class="text-lg font-extrabold font-mono text-slate-100 group-hover:text-indigo-400 transition-colors">--</p>
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
                             <p class="text-[9px] text-indigo-400 font-mono mt-1 font-semibold uppercase">&plusmn; 4x ATR Opposing</p>
                         </div>
                     </div>
@@ -411,7 +426,10 @@
                         <div class="flex items-center gap-2">
                             <i data-lucide="combine" class="w-4 h-4 text-indigo-400"></i>
                             <span class="text-slate-400">Weighted Average Price (All orders filled):</span>
-                            <strong id="gridAvgPrice" class="text-indigo-300 text-sm font-extrabold">--</strong>
+                            <div class="flex items-center gap-1.5 group cursor-pointer" onclick="copySingleValue('gridAvgPrice', 'Weighted Average Price')" title="Click to copy Average Price">
+                                <strong id="gridAvgPrice" class="text-indigo-300 text-sm font-extrabold group-hover:text-indigo-200 transition-colors">--</strong>
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
                         </div>
                         <div class="text-slate-400 text-xs">
                             Total volume: <span id="gridTotalLots" class="font-extrabold text-slate-200">--</span> Lots
@@ -443,7 +461,7 @@
                                     <span class="w-2 h-2 rounded-full bg-indigo-500 pulse-dot"></span>
                                     <span class="font-bold text-indigo-300">Take Profit 2 (TP2)</span>
                                 </div>
-                                <span id="visTP2Val" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                                <span id="visTP2Val" onclick="copySingleValue('visTP2Val', 'TP2 Target')" title="Click to copy TP2" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
                             </div>
 
                             <!-- TP1 Level Container -->
@@ -452,7 +470,7 @@
                                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                                     <span class="font-bold text-emerald-300">Take Profit 1 (TP1)</span>
                                 </div>
-                                <span id="visTP1Val" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                                <span id="visTP1Val" onclick="copySingleValue('visTP1Val', 'TP1 Target')" title="Click to copy TP1" class="font-bold text-white text-xs bg-slate-900 hover:text-emerald-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
                             </div>
 
                             <!-- Entry 1 Level Container -->
@@ -461,7 +479,7 @@
                                     <span class="w-2 h-2 rounded-full bg-slate-400"></span>
                                     <span class="font-bold text-slate-300">1st Entry Order (Base)</span>
                                 </div>
-                                <span id="visEntryVal" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                                <span id="visEntryVal" onclick="copySingleValue('visEntryVal', '1st Entry')" title="Click to copy 1st Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-slate-300 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
                             </div>
 
                             <!-- Entry 2 Scale-In Level Container -->
@@ -470,7 +488,7 @@
                                     <span class="w-2 h-2 rounded bg-indigo-400"></span>
                                     <span class="font-bold text-indigo-300">2nd Entry (&plusmn;2x ATR)</span>
                                 </div>
-                                <span id="visEntry2Val" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                                <span id="visEntry2Val" onclick="copySingleValue('visEntry2Val', '2nd Entry')" title="Click to copy 2nd Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
                             </div>
 
                             <!-- Entry 3 Scale-In Level Container -->
@@ -479,7 +497,7 @@
                                     <span class="w-2 h-2 rounded bg-indigo-400"></span>
                                     <span class="font-bold text-indigo-300">3rd Entry (&plusmn;4x ATR)</span>
                                 </div>
-                                <span id="visEntry3Val" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                                <span id="visEntry3Val" onclick="copySingleValue('visEntry3Val', '3rd Entry')" title="Click to copy 3rd Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
                             </div>
 
                             <!-- Stop Loss Level Container -->
@@ -488,7 +506,7 @@
                                     <span class="w-2 h-2 rounded-full bg-rose-500"></span>
                                     <span class="font-bold text-rose-300">Stop Loss (SL)</span>
                                 </div>
-                                <span id="visSLVal" class="font-bold text-white text-xs bg-slate-900 px-2.5 py-1 rounded border border-slate-800 font-mono">--</span>
+                                <span id="visSLVal" onclick="copySingleValue('visSLVal', 'Stop Loss')" title="Click to copy Stop Loss" class="font-bold text-white text-xs bg-slate-900 hover:text-rose-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
                             </div>
 
                         </div>
@@ -905,6 +923,32 @@
                 linesContainer.appendChild(visTP1);
                 linesContainer.appendChild(visTP2);
             }
+        }
+
+        function copySingleValue(valueId, label) {
+            const element = document.getElementById(valueId);
+            if (!element) return;
+            const text = element.textContent.trim();
+            if (text === "--" || text === "Not Set" || text === "") {
+                showToast("Nothing to Copy", `The value for ${label} is not available.`);
+                return;
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Value Copied", `${label}: ${text}`);
+            }).catch(err => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast("Value Copied", `${label}: ${text}`);
+                } catch (e) {
+                    showToast("Copy Failed", "Please select and copy manually.");
+                }
+                document.body.removeChild(textarea);
+            });
         }
 
         function copyToClipboard() {
