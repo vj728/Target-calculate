@@ -272,7 +272,7 @@
                         
                         <div id="advancedLotsGrid" class="hidden mt-3 space-y-3 bg-slate-950/65 p-3.5 rounded-xl border border-slate-800/80">
                             <span class="block text-[10px] text-slate-400 leading-relaxed font-medium">
-                                Configure lot sizes dynamically across the scaling levels. Useful for Martingale or risk adjustment.
+                                Configure lot sizes dynamically across all 6 scaling levels. Useful for Martingale or risk adjustment.
                             </span>
                             <div class="grid grid-cols-3 gap-2.5">
                                 <div>
@@ -288,6 +288,21 @@
                                 <div>
                                     <span class="block text-[9px] text-slate-500 font-mono font-bold mb-1">3rd Entry (Lots)</span>
                                     <input type="number" id="lot3" step="0.01" value="0.02" oninput="calculateTargets()"
+                                        class="w-full premium-input rounded-lg px-2 py-1.5 text-center text-xs font-mono font-bold text-white">
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] text-slate-500 font-mono font-bold mb-1">4th Entry (Lots)</span>
+                                    <input type="number" id="lot4" step="0.01" value="0.02" oninput="calculateTargets()"
+                                        class="w-full premium-input rounded-lg px-2 py-1.5 text-center text-xs font-mono font-bold text-white">
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] text-slate-500 font-mono font-bold mb-1">5th Entry (Lots)</span>
+                                    <input type="number" id="lot5" step="0.01" value="0.02" oninput="calculateTargets()"
+                                        class="w-full premium-input rounded-lg px-2 py-1.5 text-center text-xs font-mono font-bold text-white">
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] text-slate-500 font-mono font-bold mb-1">6th Entry (Lots)</span>
+                                    <input type="number" id="lot6" step="0.01" value="0.02" oninput="calculateTargets()"
                                         class="w-full premium-input rounded-lg px-2 py-1.5 text-center text-xs font-mono font-bold text-white">
                                 </div>
                             </div>
@@ -419,6 +434,42 @@
                             </div>
                             <p class="text-[9px] text-indigo-400 font-mono mt-1 font-semibold uppercase">&plusmn; 4x ATR Opposing</p>
                         </div>
+                        <!-- Entry 4 -->
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-850 hover:border-indigo-500/25">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">4th Order (Scale)</span>
+                                <span id="gridE4LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 group cursor-pointer animate-transition" onclick="copySingleValue('gridE4Price', '4th Order Entry Price')" title="Click to copy 4th Entry">
+                                <p id="gridE4Price" class="text-lg font-extrabold font-mono text-slate-100 group-hover:text-indigo-400 transition-colors">--</p>
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                            <p class="text-[9px] text-indigo-400 font-mono mt-1 font-semibold uppercase">&plusmn; 6x ATR Opposing</p>
+                        </div>
+                        <!-- Entry 5 -->
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-850 hover:border-indigo-500/25">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">5th Order (Scale)</span>
+                                <span id="gridE5LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 group cursor-pointer animate-transition" onclick="copySingleValue('gridE5Price', '5th Order Entry Price')" title="Click to copy 5th Entry">
+                                <p id="gridE5Price" class="text-lg font-extrabold font-mono text-slate-100 group-hover:text-indigo-400 transition-colors">--</p>
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                            <p class="text-[9px] text-indigo-400 font-mono mt-1 font-semibold uppercase">&plusmn; 8x ATR Opposing</p>
+                        </div>
+                        <!-- Entry 6 -->
+                        <div class="bg-slate-950/70 rounded-xl p-4 border border-slate-900/80 transition-all hover:border-slate-850 hover:border-indigo-500/25">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">6th Order (Scale)</span>
+                                <span id="gridE6LotsLabel" class="text-[9px] font-mono font-bold text-indigo-455 bg-indigo-500/10 px-2 py-0.5 rounded">0.02 Lots</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 group cursor-pointer animate-transition" onclick="copySingleValue('gridE6Price', '6th Order Entry Price')" title="Click to copy 6th Entry">
+                                <p id="gridE6Price" class="text-lg font-extrabold font-mono text-slate-100 group-hover:text-indigo-400 transition-colors">--</p>
+                                <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </div>
+                            <p class="text-[9px] text-indigo-400 font-mono mt-1 font-semibold uppercase">&plusmn; 10x ATR Opposing</p>
+                        </div>
                     </div>
 
                     <!-- Weighted Average Ribbon -->
@@ -498,6 +549,33 @@
                                     <span class="font-bold text-indigo-300">3rd Entry (&plusmn;4x ATR)</span>
                                 </div>
                                 <span id="visEntry3Val" onclick="copySingleValue('visEntry3Val', '3rd Entry')" title="Click to copy 3rd Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
+                            </div>
+
+                            <!-- Entry 4 Scale-In Level Container -->
+                            <div id="visEntry4Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
+                                    <span class="font-bold text-indigo-300">4th Entry (&plusmn;6x ATR)</span>
+                                </div>
+                                <span id="visEntry4Val" onclick="copySingleValue('visEntry4Val', '4th Entry')" title="Click to copy 4th Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
+                            </div>
+
+                            <!-- Entry 5 Scale-In Level Container -->
+                            <div id="visEntry5Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
+                                    <span class="font-bold text-indigo-300">5th Entry (&plusmn;8x ATR)</span>
+                                </div>
+                                <span id="visEntry5Val" onclick="copySingleValue('visEntry5Val', '5th Entry')" title="Click to copy 5th Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
+                            </div>
+
+                            <!-- Entry 6 Scale-In Level Container -->
+                            <div id="visEntry6Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
+                                    <span class="font-bold text-indigo-300">6th Entry (&plusmn;10x ATR)</span>
+                                </div>
+                                <span id="visEntry6Val" onclick="copySingleValue('visEntry6Val', '6th Entry')" title="Click to copy 6th Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
                             </div>
 
                             <!-- Stop Loss Level Container -->
@@ -651,7 +729,7 @@
         }
 
         // Apply a quick preset of values
-        function applyPreset(pair, entry, atr, direction, type, l1=0.02, l2=0.02, l3=0.02) {
+        function applyPreset(pair, entry, atr, direction, type, l1=0.02, l2=0.02, l3=0.02, l4=0.02, l5=0.02, l6=0.02) {
             document.getElementById('currencyPair').value = pair;
             document.getElementById('entryPrice').value = entry;
             document.getElementById('atrValue').value = atr;
@@ -660,6 +738,9 @@
             document.getElementById('lot1').value = l1;
             document.getElementById('lot2').value = l2;
             document.getElementById('lot3').value = l3;
+            document.getElementById('lot4').value = l4;
+            document.getElementById('lot5').value = l5;
+            document.getElementById('lot6').value = l6;
             
             const radioDecimal = document.querySelector('input[name="inputFormat"][value="decimal"]');
             const radioPips = document.querySelector('input[name="inputFormat"][value="pips"]');
@@ -674,7 +755,7 @@
             showToast("Preset Loaded", `Active grid targets set for ${pair}.`);
         }
 
-        // Auto calculates reasonable SL from Entry 3 position
+        // Auto calculates reasonable SL from Entry 6 position
         function autoSetStopLoss() {
             const entry = parseFloat(document.getElementById('entryPrice').value) || 0;
             const rawAtr = parseFloat(document.getElementById('atrValue').value) || 0;
@@ -699,8 +780,8 @@
                 }
             }
 
-            // Calculations are 4x ATR past entry for Entry 3. Stop loss is another 1x ATR out (Total 5x ATR)
-            const calculatedSL = tradeDirection === 'long' ? (entry - (5 * atrUnitVal)) : (entry + (5 * atrUnitVal));
+            // Calculations are 10x ATR past entry for Entry 6. Stop loss is another 1x ATR out (Total 11x ATR)
+            const calculatedSL = tradeDirection === 'long' ? (entry - (11 * atrUnitVal)) : (entry + (11 * atrUnitVal));
             
             const entryStr = document.getElementById('entryPrice').value;
             const dotIdx = entryStr.indexOf('.');
@@ -708,7 +789,7 @@
 
             document.getElementById('stopLoss').value = calculatedSL.toFixed(decimalPlaces);
             calculateTargets();
-            showToast("Stop Loss Auto-Set", "Stop loss calculated 1x ATR beyond Entry Order 3.");
+            showToast("Stop Loss Auto-Set", "Stop loss calculated 1x ATR beyond Entry Order 6.");
         }
 
         function resetInputs() {
@@ -719,6 +800,9 @@
             document.getElementById('lot1').value = "0.02";
             document.getElementById('lot2').value = "0.02";
             document.getElementById('lot3').value = "0.02";
+            document.getElementById('lot4').value = "0.02";
+            document.getElementById('lot5').value = "0.02";
+            document.getElementById('lot6').value = "0.02";
             document.querySelector('input[name="inputFormat"][value="decimal"]').checked = true;
             setAssetType('std_forex');
             setDirection('long');
@@ -737,6 +821,9 @@
             const lot1 = parseFloat(document.getElementById('lot1').value) || 0;
             const lot2 = parseFloat(document.getElementById('lot2').value) || 0;
             const lot3 = parseFloat(document.getElementById('lot3').value) || 0;
+            const lot4 = parseFloat(document.getElementById('lot4').value) || 0;
+            const lot5 = parseFloat(document.getElementById('lot5').value) || 0;
+            const lot6 = parseFloat(document.getElementById('lot6').value) || 0;
 
             if (isNaN(entry) || isNaN(rawAtr) || entry <= 0 || rawAtr <= 0) {
                 clearOutputs();
@@ -768,6 +855,9 @@
             document.getElementById('gridE1LotsLabel').textContent = `${lot1.toFixed(2)} Lots`;
             document.getElementById('gridE2LotsLabel').textContent = `${lot2.toFixed(2)} Lots`;
             document.getElementById('gridE3LotsLabel').textContent = `${lot3.toFixed(2)} Lots`;
+            document.getElementById('gridE4LotsLabel').textContent = `${lot4.toFixed(2)} Lots`;
+            document.getElementById('gridE5LotsLabel').textContent = `${lot5.toFixed(2)} Lots`;
+            document.getElementById('gridE6LotsLabel').textContent = `${lot6.toFixed(2)} Lots`;
 
             // Calculate Take Profit positions
             let tp1, tp2;
@@ -783,13 +873,19 @@
             }
 
             // Calculate Scale-In levels
-            let entry2, entry3;
+            let entry2, entry3, entry4, entry5, entry6;
             if (tradeDirection === 'long') {
                 entry2 = entry - (2 * roundedAtrOffset);
                 entry3 = entry - (4 * roundedAtrOffset);
+                entry4 = entry - (6 * roundedAtrOffset);
+                entry5 = entry - (8 * roundedAtrOffset);
+                entry6 = entry - (10 * roundedAtrOffset);
             } else {
                 entry2 = entry + (2 * roundedAtrOffset);
                 entry3 = entry + (4 * roundedAtrOffset);
+                entry4 = entry + (6 * roundedAtrOffset);
+                entry5 = entry + (8 * roundedAtrOffset);
+                entry6 = entry + (10 * roundedAtrOffset);
             }
 
             // Update Target board UI
@@ -804,12 +900,15 @@
             document.getElementById('gridE1Price').textContent = entry.toFixed(decimalPoints);
             document.getElementById('gridE2Price').textContent = entry2.toFixed(decimalPoints);
             document.getElementById('gridE3Price').textContent = entry3.toFixed(decimalPoints);
+            document.getElementById('gridE4Price').textContent = entry4.toFixed(decimalPoints);
+            document.getElementById('gridE5Price').textContent = entry5.toFixed(decimalPoints);
+            document.getElementById('gridE6Price').textContent = entry6.toFixed(decimalPoints);
 
             // Compute Average Entry Price logic
-            const totalLots = lot1 + lot2 + lot3;
+            const totalLots = lot1 + lot2 + lot3 + lot4 + lot5 + lot6;
             let weightedAverage = 0;
             if (totalLots > 0) {
-                weightedAverage = ((entry * lot1) + (entry2 * lot2) + (entry3 * lot3)) / totalLots;
+                weightedAverage = ((entry * lot1) + (entry2 * lot2) + (entry3 * lot3) + (entry4 * lot4) + (entry5 * lot5) + (entry6 * lot6)) / totalLots;
             } else {
                 weightedAverage = entry;
             }
@@ -837,6 +936,15 @@
                 </div>
                 <div>
                     Order 3 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 4) = <span class="text-indigo-305 font-semibold text-slate-305">${entry3.toFixed(decimalPoints)}</span>
+                </div>
+                <div>
+                    Order 4 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 6) = <span class="text-indigo-305 font-semibold text-slate-305">${entry4.toFixed(decimalPoints)}</span>
+                </div>
+                <div>
+                    Order 5 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 8) = <span class="text-indigo-305 font-semibold text-slate-305">${entry5.toFixed(decimalPoints)}</span>
+                </div>
+                <div>
+                    Order 6 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 10) = <span class="text-indigo-305 font-semibold text-slate-305">${entry6.toFixed(decimalPoints)}</span>
                 </div>
             `;
 
@@ -869,7 +977,7 @@
             }
 
             // Dynamic map rendering refresh
-            updateVisualizer(entry, entry2, entry3, tp1, tp2, stopLossInput, decimalPoints);
+            updateVisualizer(entry, entry2, entry3, entry4, entry5, entry6, tp1, tp2, stopLossInput, decimalPoints);
         }
 
         function clearOutputs() {
@@ -878,6 +986,9 @@
             document.getElementById('gridE1Price').textContent = "--";
             document.getElementById('gridE2Price').textContent = "--";
             document.getElementById('gridE3Price').textContent = "--";
+            document.getElementById('gridE4Price').textContent = "--";
+            document.getElementById('gridE5Price').textContent = "--";
+            document.getElementById('gridE6Price').textContent = "--";
             document.getElementById('gridAvgPrice').textContent = "--";
             document.getElementById('gridTotalLots').textContent = "--";
             document.getElementById('sumRawAtr').textContent = "--";
@@ -885,13 +996,16 @@
             document.getElementById('formulaSteps').innerHTML = `<div class="text-slate-500 italic text-[11px]">Awaiting inputs...</div>`;
         }
 
-        function updateVisualizer(entry1, entry2, entry3, tp1, tp2, stopLoss, decimals) {
+        function updateVisualizer(entry1, entry2, entry3, entry4, entry5, entry6, tp1, tp2, stopLoss, decimals) {
             const linesContainer = document.querySelector('.relative.w-full.flex.flex-col');
             const visTP2 = document.getElementById('visTP2Line');
             const visTP1 = document.getElementById('visTP1Line');
             const visEntry1 = document.getElementById('visEntryLine');
             const visEntry2 = document.getElementById('visEntry2Line');
             const visEntry3 = document.getElementById('visEntry3Line');
+            const visEntry4 = document.getElementById('visEntry4Line');
+            const visEntry5 = document.getElementById('visEntry5Line');
+            const visEntry6 = document.getElementById('visEntry6Line');
             const visSL = document.getElementById('visSLLine');
 
             document.getElementById('visTP2Val').textContent = tp2.toFixed(decimals);
@@ -899,6 +1013,9 @@
             document.getElementById('visEntryVal').textContent = entry1.toFixed(decimals);
             document.getElementById('visEntry2Val').textContent = entry2.toFixed(decimals);
             document.getElementById('visEntry3Val').textContent = entry3.toFixed(decimals);
+            document.getElementById('visEntry4Val').textContent = entry4.toFixed(decimals);
+            document.getElementById('visEntry5Val').textContent = entry5.toFixed(decimals);
+            document.getElementById('visEntry6Val').textContent = entry6.toFixed(decimals);
 
             // Re-order visual map boxes depending on Long or Short direction
             visTP2.remove();
@@ -906,6 +1023,9 @@
             visEntry1.remove();
             visEntry2.remove();
             visEntry3.remove();
+            visEntry4.remove();
+            visEntry5.remove();
+            visEntry6.remove();
             visSL.remove();
 
             if (tradeDirection === 'long') {
@@ -914,9 +1034,15 @@
                 linesContainer.appendChild(visEntry1);
                 linesContainer.appendChild(visEntry2);
                 linesContainer.appendChild(visEntry3);
+                linesContainer.appendChild(visEntry4);
+                linesContainer.appendChild(visEntry5);
+                linesContainer.appendChild(visEntry6);
                 linesContainer.appendChild(visSL);
             } else {
                 linesContainer.appendChild(visSL);
+                linesContainer.appendChild(visEntry6);
+                linesContainer.appendChild(visEntry5);
+                linesContainer.appendChild(visEntry4);
                 linesContainer.appendChild(visEntry3);
                 linesContainer.appendChild(visEntry2);
                 linesContainer.appendChild(visEntry1);
@@ -956,6 +1082,9 @@
             const entry1 = document.getElementById('gridE1Price').textContent;
             const entry2 = document.getElementById('gridE2Price').textContent;
             const entry3 = document.getElementById('gridE3Price').textContent;
+            const entry4 = document.getElementById('gridE4Price').textContent;
+            const entry5 = document.getElementById('gridE5Price').textContent;
+            const entry6 = document.getElementById('gridE6Price').textContent;
             const avgEntry = document.getElementById('gridAvgPrice').textContent;
             const totalLots = document.getElementById('gridTotalLots').textContent;
             const tp1 = document.getElementById('tp1Output').textContent;
@@ -973,6 +1102,9 @@
 1st Order Price (Base): ${entry1} [Lots: ${document.getElementById('lot1').value}]
 2nd Order Price (Scale): ${entry2} [Lots: ${document.getElementById('lot2').value}]
 3rd Order Price (Scale): ${entry3} [Lots: ${document.getElementById('lot3').value}]
+4th Order Price (Scale): ${entry4} [Lots: ${document.getElementById('lot4').value}]
+5th Order Price (Scale): ${entry5} [Lots: ${document.getElementById('lot5').value}]
+6th Order Price (Scale): ${entry6} [Lots: ${document.getElementById('lot6').value}]
 ---------------------------------------------------
 Weighted average price if filled: ${avgEntry} (${totalLots} Lots total)
 ---------------------------------------------------
