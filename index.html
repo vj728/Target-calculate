@@ -470,107 +470,7 @@
 
                 </div>
 
-                <!-- Interactive Vertical Price Ladder Map -->
-                <div class="premium-card rounded-2xl p-6 shadow-xl space-y-4">
-                    <div class="flex items-center justify-between pb-2 border-b border-slate-850">
-                        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                            <i data-lucide="sliders" class="w-4 h-4 text-indigo-400"></i>
-                            Interactive Trade Visualizer Map
-                        </h3>
-                        <span class="text-[9px] text-slate-500 font-mono font-bold uppercase">Pricing Timeline</span>
-                    </div>
 
-                    <div class="bg-slate-950/90 rounded-xl p-5 border border-slate-900 relative flex flex-col justify-center min-h-[420px]">
-                        <!-- Vertical connecting line down visual -->
-                        <div class="absolute left-6 top-10 bottom-10 w-[2px] bg-indigo-950/80 border-dashed border-slate-800 pointer-events-none"></div>
-
-                        <!-- Content wrapper -->
-                        <div class="relative w-full flex flex-col gap-3 font-mono text-xs z-10 pl-10">
-                            
-                            <!-- TP2 Level Container -->
-                            <div id="visTP2Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-indigo-500 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-indigo-500 pulse-dot"></span>
-                                    <span class="font-bold text-indigo-300">Take Profit 2 (TP2)</span>
-                                </div>
-                                <span id="visTP2Val" onclick="copySingleValue('visTP2Val', 'TP2 Target')" title="Click to copy TP2" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                            <!-- TP1 Level Container -->
-                            <div id="visTP1Line" class="flex items-center justify-between p-3 rounded-xl bg-emerald-950/10 border-l-4 border-emerald-500 border-y border-r border-slate-850 transition-all hover:bg-emerald-950/20">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                    <span class="font-bold text-emerald-300">Take Profit 1 (TP1)</span>
-                                </div>
-                                <span id="visTP1Val" onclick="copySingleValue('visTP1Val', 'TP1 Target')" title="Click to copy TP1" class="font-bold text-white text-xs bg-slate-900 hover:text-emerald-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                            <!-- Entry 1 Level Container -->
-                            <div id="visEntryLine" class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border-l-4 border-slate-400 border-y border-r border-slate-850 transition-all hover:bg-slate-900">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-slate-400"></span>
-                                    <span class="font-bold text-slate-300">1st Entry Order (Base)</span>
-                                </div>
-                                <span id="visEntryVal" onclick="copySingleValue('visEntryVal', '1st Entry')" title="Click to copy 1st Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-slate-300 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                            <!-- Entry 2 Scale-In Level Container -->
-                            <div id="visEntry2Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
-                                    <span class="font-bold text-indigo-300">2nd Entry (&plusmn;2x ATR)</span>
-                                </div>
-                                <span id="visEntry2Val" onclick="copySingleValue('visEntry2Val', '2nd Entry')" title="Click to copy 2nd Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                            <!-- Entry 3 Scale-In Level Container -->
-                            <div id="visEntry3Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
-                                    <span class="font-bold text-indigo-300">3rd Entry (&plusmn;4x ATR)</span>
-                                </div>
-                                <span id="visEntry3Val" onclick="copySingleValue('visEntry3Val', '3rd Entry')" title="Click to copy 3rd Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                            <!-- Entry 4 Scale-In Level Container -->
-                            <div id="visEntry4Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
-                                    <span class="font-bold text-indigo-300">4th Entry (&plusmn;6x ATR)</span>
-                                </div>
-                                <span id="visEntry4Val" onclick="copySingleValue('visEntry4Val', '4th Entry')" title="Click to copy 4th Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                            <!-- Entry 5 Scale-In Level Container -->
-                            <div id="visEntry5Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
-                                    <span class="font-bold text-indigo-300">5th Entry (&plusmn;8x ATR)</span>
-                                </div>
-                                <span id="visEntry5Val" onclick="copySingleValue('visEntry5Val', '5th Entry')" title="Click to copy 5th Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                            <!-- Entry 6 Scale-In Level Container -->
-                            <div id="visEntry6Line" class="flex items-center justify-between p-3 rounded-xl bg-indigo-950/10 border-l-4 border-dashed border-indigo-400/60 border-y border-r border-slate-850 transition-all hover:bg-indigo-950/20">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded bg-indigo-400"></span>
-                                    <span class="font-bold text-indigo-300">6th Entry (&plusmn;10x ATR)</span>
-                                </div>
-                                <span id="visEntry6Val" onclick="copySingleValue('visEntry6Val', '6th Entry')" title="Click to copy 6th Entry" class="font-bold text-white text-xs bg-slate-900 hover:text-indigo-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                            <!-- Stop Loss Level Container -->
-                            <div id="visSLLine" class="flex items-center justify-between p-3 rounded-xl bg-rose-950/10 border-l-4 border-rose-500 border-y border-r border-slate-850 opacity-40 transition-all duration-350 hover:opacity-100 hover:bg-rose-950/20">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                                    <span class="font-bold text-rose-300">Stop Loss (SL)</span>
-                                </div>
-                                <span id="visSLVal" onclick="copySingleValue('visSLVal', 'Stop Loss')" title="Click to copy Stop Loss" class="font-bold text-white text-xs bg-slate-900 hover:text-rose-400 cursor-pointer px-2.5 py-1 rounded border border-slate-800 font-mono transition-colors">--</span>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
 
                 <!-- History Logs Table -->
                 <div class="premium-card rounded-2xl p-6 shadow-xl space-y-4">
@@ -946,17 +846,17 @@
                     document.getElementById('tp1RR').textContent = `1 : ${(tp1Reward / totalRisk).toFixed(2)}`;
                     document.getElementById('tp2RR').textContent = `1 : ${(tp2Reward / totalRisk).toFixed(2)}`;
 
-                    tp1RRContainer.classList.remove('hidden');
-                    tp2RRContainer.classList.remove('hidden');
+                    if (tp1RRContainer) tp1RRContainer.classList.remove('hidden');
+                    if (tp2RRContainer) tp2RRContainer.classList.remove('hidden');
 
-                    visSLLine.classList.remove('opacity-40');
-                    visSLVal.textContent = stopLossInput.toFixed(decimalPoints);
+                    if (visSLLine) visSLLine.classList.remove('opacity-40');
+                    if (visSLVal) visSLVal.textContent = stopLossInput.toFixed(decimalPoints);
                 }
             } else {
-                tp1RRContainer.classList.add('hidden');
-                tp2RRContainer.classList.add('hidden');
-                visSLLine.classList.add('opacity-40');
-                visSLVal.textContent = "Not Set";
+                if (tp1RRContainer) tp1RRContainer.classList.add('hidden');
+                if (tp2RRContainer) tp2RRContainer.classList.add('hidden');
+                if (visSLLine) visSLLine.classList.add('opacity-40');
+                if (visSLVal) visSLVal.textContent = "Not Set";
             }
 
             // Dynamic map rendering refresh
@@ -984,6 +884,8 @@
 
         function updateVisualizer(entry1, entry2, entry3, entry4, entry5, entry6, tp1, tp2, stopLoss, decimals) {
             const linesContainer = document.querySelector('.relative.w-full.flex.flex-col');
+            if (!linesContainer) return;
+
             const visTP2 = document.getElementById('visTP2Line');
             const visTP1 = document.getElementById('visTP1Line');
             const visEntry1 = document.getElementById('visEntryLine');
@@ -994,46 +896,46 @@
             const visEntry6 = document.getElementById('visEntry6Line');
             const visSL = document.getElementById('visSLLine');
 
-            document.getElementById('visTP2Val').textContent = tp2.toFixed(decimals);
-            document.getElementById('visTP1Val').textContent = tp1.toFixed(decimals);
-            document.getElementById('visEntryVal').textContent = entry1.toFixed(decimals);
-            document.getElementById('visEntry2Val').textContent = entry2.toFixed(decimals);
-            document.getElementById('visEntry3Val').textContent = entry3.toFixed(decimals);
-            document.getElementById('visEntry4Val').textContent = entry4.toFixed(decimals);
-            document.getElementById('visEntry5Val').textContent = entry5.toFixed(decimals);
-            document.getElementById('visEntry6Val').textContent = entry6.toFixed(decimals);
+            if (visTP2) document.getElementById('visTP2Val').textContent = tp2.toFixed(decimals);
+            if (visTP1) document.getElementById('visTP1Val').textContent = tp1.toFixed(decimals);
+            if (visEntry1) document.getElementById('visEntryVal').textContent = entry1.toFixed(decimals);
+            if (visEntry2) document.getElementById('visEntry2Val').textContent = entry2.toFixed(decimals);
+            if (visEntry3) document.getElementById('visEntry3Val').textContent = entry3.toFixed(decimals);
+            if (visEntry4) document.getElementById('visEntry4Val').textContent = entry4.toFixed(decimals);
+            if (visEntry5) document.getElementById('visEntry5Val').textContent = entry5.toFixed(decimals);
+            if (visEntry6) document.getElementById('visEntry6Val').textContent = entry6.toFixed(decimals);
 
             // Re-order visual map boxes depending on Long or Short direction
-            visTP2.remove();
-            visTP1.remove();
-            visEntry1.remove();
-            visEntry2.remove();
-            visEntry3.remove();
-            visEntry4.remove();
-            visEntry5.remove();
-            visEntry6.remove();
-            visSL.remove();
+            if (visTP2) visTP2.remove();
+            if (visTP1) visTP1.remove();
+            if (visEntry1) visEntry1.remove();
+            if (visEntry2) visEntry2.remove();
+            if (visEntry3) visEntry3.remove();
+            if (visEntry4) visEntry4.remove();
+            if (visEntry5) visEntry5.remove();
+            if (visEntry6) visEntry6.remove();
+            if (visSL) visSL.remove();
 
             if (tradeDirection === 'long') {
-                linesContainer.appendChild(visTP2);
-                linesContainer.appendChild(visTP1);
-                linesContainer.appendChild(visEntry1);
-                linesContainer.appendChild(visEntry2);
-                linesContainer.appendChild(visEntry3);
-                linesContainer.appendChild(visEntry4);
-                linesContainer.appendChild(visEntry5);
-                linesContainer.appendChild(visEntry6);
-                linesContainer.appendChild(visSL);
+                if (visTP2) linesContainer.appendChild(visTP2);
+                if (visTP1) linesContainer.appendChild(visTP1);
+                if (visEntry1) linesContainer.appendChild(visEntry1);
+                if (visEntry2) linesContainer.appendChild(visEntry2);
+                if (visEntry3) linesContainer.appendChild(visEntry3);
+                if (visEntry4) linesContainer.appendChild(visEntry4);
+                if (visEntry5) linesContainer.appendChild(visEntry5);
+                if (visEntry6) linesContainer.appendChild(visEntry6);
+                if (visSL) linesContainer.appendChild(visSL);
             } else {
-                linesContainer.appendChild(visSL);
-                linesContainer.appendChild(visEntry6);
-                linesContainer.appendChild(visEntry5);
-                linesContainer.appendChild(visEntry4);
-                linesContainer.appendChild(visEntry3);
-                linesContainer.appendChild(visEntry2);
-                linesContainer.appendChild(visEntry1);
-                linesContainer.appendChild(visTP1);
-                linesContainer.appendChild(visTP2);
+                if (visSL) linesContainer.appendChild(visSL);
+                if (visEntry6) linesContainer.appendChild(visEntry6);
+                if (visEntry5) linesContainer.appendChild(visEntry5);
+                if (visEntry4) linesContainer.appendChild(visEntry4);
+                if (visEntry3) linesContainer.appendChild(visEntry3);
+                if (visEntry2) linesContainer.appendChild(visEntry2);
+                if (visEntry1) linesContainer.appendChild(visEntry1);
+                if (visTP1) linesContainer.appendChild(visTP1);
+                if (visTP2) linesContainer.appendChild(visTP2);
             }
         }
 
