@@ -308,23 +308,7 @@
 
                 </div>
 
-                <!-- Step calculations terminal logs -->
-                <div class="premium-card rounded-2xl p-5 text-xs text-slate-400 space-y-3 bg-slate-950/40">
-                    <div class="flex items-center justify-between border-b border-slate-850 pb-2">
-                        <span class="font-bold text-slate-300 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
-                            <i data-lucide="terminal" class="w-3.5 h-3.5 text-indigo-400"></i>
-                            Formula Steps Log
-                        </span>
-                        <div class="flex space-x-1">
-                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500/60 inline-block"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500/60 inline-block"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/60 inline-block"></span>
-                        </div>
-                    </div>
-                    <div id="formulaSteps" class="font-mono text-[11px] text-slate-350 space-y-1.5 leading-relaxed">
-                        <!-- Dynamically generated logs -->
-                    </div>
-                </div>
+
 
             </section>
 
@@ -919,31 +903,33 @@
 
             // Update step explanation board
             const formulaBox = document.getElementById('formulaSteps');
-            formulaBox.innerHTML = `
-                <div>1st Order Entry: <span class="text-indigo-400 font-bold">${entry}</span></div>
-                <div>Ceiled ATR Step Value: <span class="text-amber-400 font-bold">${roundedAtrOffset.toFixed(decimalPoints)}</span></div>
-                <div class="pt-1.5 border-t border-slate-800/60 mt-1">
-                    TP1: ${entry} ${opSymbol} ${roundedAtrOffset.toFixed(decimalPoints)} = <span class="text-emerald-400 font-bold">${tp1.toFixed(decimalPoints)}</span>
-                </div>
-                <div>
-                    TP2: ${entry} ${opSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 2) = <span class="text-indigo-400 font-bold">${tp2.toFixed(decimalPoints)}</span>
-                </div>
-                <div class="pt-1.5 border-t border-slate-800/60 mt-1">
-                    Order 2 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 2) = <span class="text-indigo-305 font-semibold text-slate-305">${entry2.toFixed(decimalPoints)}</span>
-                </div>
-                <div>
-                    Order 3 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 4) = <span class="text-indigo-305 font-semibold text-slate-305">${entry3.toFixed(decimalPoints)}</span>
-                </div>
-                <div>
-                    Order 4 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 6) = <span class="text-indigo-305 font-semibold text-slate-305">${entry4.toFixed(decimalPoints)}</span>
-                </div>
-                <div>
-                    Order 5 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 8) = <span class="text-indigo-305 font-semibold text-slate-305">${entry5.toFixed(decimalPoints)}</span>
-                </div>
-                <div>
-                    Order 6 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 10) = <span class="text-indigo-305 font-semibold text-slate-305">${entry6.toFixed(decimalPoints)}</span>
-                </div>
-            `;
+            if (formulaBox) {
+                formulaBox.innerHTML = `
+                    <div>1st Order Entry: <span class="text-indigo-400 font-bold">${entry}</span></div>
+                    <div>Ceiled ATR Step Value: <span class="text-amber-400 font-bold">${roundedAtrOffset.toFixed(decimalPoints)}</span></div>
+                    <div class="pt-1.5 border-t border-slate-800/60 mt-1">
+                        TP1: ${entry} ${opSymbol} ${roundedAtrOffset.toFixed(decimalPoints)} = <span class="text-emerald-400 font-bold">${tp1.toFixed(decimalPoints)}</span>
+                    </div>
+                    <div>
+                        TP2: ${entry} ${opSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 2) = <span class="text-indigo-400 font-bold">${tp2.toFixed(decimalPoints)}</span>
+                    </div>
+                    <div class="pt-1.5 border-t border-slate-800/60 mt-1">
+                        Order 2 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 2) = <span class="text-indigo-305 font-semibold text-slate-305">${entry2.toFixed(decimalPoints)}</span>
+                    </div>
+                    <div>
+                        Order 3 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 4) = <span class="text-indigo-305 font-semibold text-slate-305">${entry3.toFixed(decimalPoints)}</span>
+                    </div>
+                    <div>
+                        Order 4 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 6) = <span class="text-indigo-305 font-semibold text-slate-305">${entry4.toFixed(decimalPoints)}</span>
+                    </div>
+                    <div>
+                        Order 5 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 8) = <span class="text-indigo-305 font-semibold text-slate-305">${entry5.toFixed(decimalPoints)}</span>
+                    </div>
+                    <div>
+                        Order 6 Grid: ${entry} ${oppOpSymbol} (${roundedAtrOffset.toFixed(decimalPoints)} × 10) = <span class="text-indigo-305 font-semibold text-slate-305">${entry6.toFixed(decimalPoints)}</span>
+                    </div>
+                `;
+            }
 
             // Calculate Risk/Reward ratio elements if optional Stop Loss provided
             const tp1RRContainer = document.getElementById('tp1RRContainer');
@@ -990,7 +976,10 @@
             document.getElementById('gridTotalLots').textContent = "--";
             document.getElementById('sumRawAtr').textContent = "--";
             document.getElementById('sumRoundAtr').textContent = "--";
-            document.getElementById('formulaSteps').innerHTML = `<div class="text-slate-500 italic text-[11px]">Awaiting inputs...</div>`;
+            const formulaBox = document.getElementById('formulaSteps');
+            if (formulaBox) {
+                formulaBox.innerHTML = `<div class="text-slate-500 italic text-[11px]">Awaiting inputs...</div>`;
+            }
         }
 
         function updateVisualizer(entry1, entry2, entry3, entry4, entry5, entry6, tp1, tp2, stopLoss, decimals) {
