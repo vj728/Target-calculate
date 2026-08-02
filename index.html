@@ -180,27 +180,7 @@
                         </div>
                     </div>
 
-                    <!-- Asset Precision Mode Buttons -->
-                    <div class="space-y-2">
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Asset Precision Mode</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button type="button" id="type_std" onclick="setAssetType('std_forex')" 
-                                class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition group hover:bg-slate-900/60 text-slate-400">
-                                <span class="text-xs font-bold text-slate-200">Standard Forex</span>
-                                <span class="text-[9px] text-slate-500 font-mono mt-1">0.0001 Pip</span>
-                            </button>
-                            <button type="button" id="type_jpy" onclick="setAssetType('jpy_forex')" 
-                                class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition group hover:bg-slate-900/60 text-slate-400">
-                                <span class="text-xs font-bold text-slate-200">JPY Forex</span>
-                                <span class="text-[9px] text-slate-500 font-mono mt-1">0.01 Pip</span>
-                            </button>
-                            <button type="button" id="type_standard" onclick="setAssetType('standard')" 
-                                class="p-3 bg-slate-950 border-2 border-indigo-500/80 bg-indigo-500/10 rounded-xl flex flex-col items-center justify-center text-center transition text-slate-200 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
-                                <span class="text-xs font-bold text-slate-200">Indices/Stocks</span>
-                                <span class="text-[9px] text-slate-500 font-mono mt-1">Whole Integers</span>
-                            </button>
-                        </div>
-                    </div>
+
 
                     <!-- Parameters Input Rows -->
                     <div class="space-y-4">
@@ -580,16 +560,16 @@
             const btnJpy = document.getElementById('type_jpy');
             const btnStandard = document.getElementById('type_standard');
 
-            // Reset borders and active classes
-            btnStd.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
-            btnJpy.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
-            btnStandard.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
+            // Reset borders and active classes if buttons exist
+            if (btnStd) btnStd.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
+            if (btnJpy) btnJpy.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
+            if (btnStandard) btnStandard.className = "p-3 bg-slate-950 border border-slate-800 rounded-xl flex flex-col items-center justify-center text-center transition hover:bg-slate-900/60 text-slate-400";
 
-            if (type === 'std_forex') {
+            if (type === 'std_forex' && btnStd) {
                 btnStd.className = "p-3 bg-slate-950 border-2 border-indigo-500/80 bg-indigo-500/10 rounded-xl flex flex-col items-center justify-center text-center transition text-slate-200 shadow-[0_0_15px_rgba(99,102,241,0.15)]";
-            } else if (type === 'jpy_forex') {
+            } else if (type === 'jpy_forex' && btnJpy) {
                 btnJpy.className = "p-3 bg-slate-950 border-2 border-indigo-500/80 bg-indigo-500/10 rounded-xl flex flex-col items-center justify-center text-center transition text-slate-200 shadow-[0_0_15px_rgba(99,102,241,0.15)]";
-            } else {
+            } else if (type === 'standard' && btnStandard) {
                 btnStandard.className = "p-3 bg-slate-950 border-2 border-indigo-500/80 bg-indigo-500/10 rounded-xl flex flex-col items-center justify-center text-center transition text-slate-200 shadow-[0_0_15px_rgba(99,102,241,0.15)]";
             }
 
